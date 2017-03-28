@@ -6,19 +6,41 @@
 //     exports.options;
 //     module.exports.options;
 // })
+/**
+ * Constructor of Configuration 
+ * @class Configuration
+ * @private {Map} map Map对象
+ * @method set
+ * @method get 
+ * @description 一个对象规划配置gulp tasks 
+ */
 
 function Configuration(){
+      
        var map =new Map();
+        /**
+         * set key and value of Map
+         * @method set 
+         * @param {String}  x taskname
+         * @param {Task} y task object
+         */
        this.set = (x,y) => map.set(x,y);
        this.get =(x) => map.get(x);
        this.map = () =>  map;
 }
 /**
- * @prop default 设置default build 工程 默认为false 即不设置，当设置时需要将 default 值设置为 Array ，Array 中存放需要build 的工程名称如：['gui']
+ * @prop default {Array}  设置default build 工程 默认为[] ，Array 中存放需要build 的工程名称如：['gui']
  */
-Configuration.prototype.default = false;
+Configuration.prototype.default = ['gui'];
+/**
+ * constructor of Task
+ * @class Task
+ * @prop {String} name taskname
+ * @prop {String} less path of less pack config
+ * @prop {String} js path of js pack config
+ */
 
-function ConfigOptions(name,less,js,font){
+function Task(name,less,js,font){
     this.name=name||"framework";//生成合并文件的名字
     this.less=less||"./less/pack.less";
     this.js=js||"./js/pack/pack.js";
@@ -29,13 +51,10 @@ function ConfigOptions(name,less,js,font){
     //this.font=font;
 }
 
-Configuration.prototype.default = ['gui'];
-var config = new Configuration;
-/**
- * @param <string>  folderName
- * @param <ConfigItem> config of project
- */
-config.set("gui",new ConfigOptions);
+//gulp tasks 配置对象实例
+var tasks_config = new Configuration;
+
+tasks_config.set("gui",new Task);
 // config.set("liz",new ConfigOptions);
 
 //>node   node_modules\gulp\bin\gulp.js gui
@@ -43,5 +62,5 @@ config.set("gui",new ConfigOptions);
 
 
 
-module.exports = config;
+module.exports = tasks_config;
 
